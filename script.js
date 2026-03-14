@@ -40,6 +40,7 @@ function applySettings() {
     customColorContainer.classList.toggle('hidden', settings.colorMode === 'dynamic');
     if (settings.colorMode === 'custom') {
         document.documentElement.style.setProperty('--bg-gradient-start', settings.manualColor);
+        document.documentElement.style.setProperty('--bg-gradient-end', '#050505');
     }
     manualColorInput.value = settings.manualColor;
 
@@ -82,14 +83,17 @@ function updateClock() {
     
     // Dynamic Color Cycle: only if in dynamic mode
     if (settings.colorMode === 'dynamic') {
-        const hue = (now.getSeconds() * 6); 
-        document.documentElement.style.setProperty('--bg-gradient-start', `hsl(${hue}, 70%, 50%)`);
+        const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
+        const hueStart = (seconds * 6) % 360; 
+        const hueEnd = (hueStart + 60) % 360;
+        document.documentElement.style.setProperty('--bg-gradient-start', `hsl(${hueStart}, 70%, 40%)`);
+        document.documentElement.style.setProperty('--bg-gradient-end', `hsl(${hueEnd}, 70%, 20%)`);
     }
 }
 
 // Event Listeners
-settingsBtn.addEventListener('click', () => settingsPanel.classList.remove('hidden'));
-closeSettings.addEventListener('click', () => settingsPanel.classList.add('hidden'));
+settingsBtn.addEventListener('click', () => settingsPanel.classList.add('active'));
+closeSettings.addEventListener('click', () => settingsPanel.classList.remove('active'));
 
 colorModeSelect.addEventListener('change', (e) => {
     settings.colorMode = e.target.value;
@@ -115,15 +119,29 @@ fontSelect.addEventListener('change', (e) => {
     saveSettings();
 });
 
-// Tilt Effect
+// Smooth Tilt Effect
+let targetX = 0, targetY = 0;
+let currentX = 0, currentY = 0;
+
 document.addEventListener('mousemove', (e) => {
-    const xAxis = (window.innerWidth / 2 - e.pageX) / 40;
-    const yAxis = (window.innerHeight / 2 - e.pageY) / 40;
-    clockCard.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+    targetX = (window.innerWidth / 2 - e.pageX) / 30;
+    targetY = (window.innerHeight / 2 - e.pageY) / 30;
 });
+
+document.addEventListener('mouseleave', () => {
+    targetX = 0;
+    targetY = 0;
+});
+
+function animateTilt() {
+    currentX += (targetX - currentX) * 0.1;
+    currentY += (targetY - currentY) * 0.1;
+    clockCard.style.transform = `rotateY(${currentX}deg) rotateX(${currentY}deg)`;
+    requestAnimationFrame(animateTilt);
+}
 
 // Initialize
 loadSettings();
 updateClock();
-setInterval(updateClock, 1000);
-
+setInterval(updateClock, 100); // Faster update for smooth gradients
+animateTilt();

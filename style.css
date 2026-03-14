@@ -1,10 +1,11 @@
 :root {
     --bg-gradient-start: hsl(0, 70%, 50%);
     --bg-gradient-end: hsl(60, 70%, 50%);
-    --glass-bg: rgba(255, 255, 255, 0.1);
-    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.15);
     --text-primary: #ffffff;
-    --inner-glow: rgba(255, 255, 255, 0.3);
+    --inner-glow: rgba(255, 255, 255, 0.2);
+    --accent-glow: rgba(255, 255, 255, 0.4);
 }
 
 * {
@@ -34,8 +35,8 @@ body {
     width: 100%;
     height: 100%;
     z-index: -1;
-    background: var(--bg-gradient-start);
-    transition: background 1s ease;
+    background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+    transition: background 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .noise {
@@ -53,25 +54,28 @@ body {
 /* Glass Card */
 .glass-card {
     position: relative;
-    padding: 40px 60px;
+    padding: 60px 80px;
     background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
     border: 1px solid var(--glass-border);
-    border-radius: 30px;
-    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1),
-                inset 0 1px 0 var(--inner-glow);
+    border-radius: 40px;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 var(--inner-glow),
+                0 0 20px var(--inner-glow);
     text-align: center;
     z-index: 10;
-    transition: transform 0.3s ease;
+    transition: transform 0.1s ease-out;
 }
 
 .time-display {
-    font-size: 5rem;
+    font-size: 6rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     margin-bottom: 10px;
     line-height: 1;
+    text-shadow: 0 0 30px var(--accent-glow);
+    font-variant-numeric: tabular-nums;
 }
 
 .date-display {
@@ -115,20 +119,26 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.settings-panel.active {
     opacity: 1;
-    transition: opacity 0.3s ease;
+    visibility: visible;
 }
 
 .settings-panel.hidden {
-    display: none;
-    opacity: 0;
+    /* Kept for potential JS logic, but handled by visibility/opacity */
 }
 
 .settings-content {
