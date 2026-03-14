@@ -81,6 +81,126 @@ body {
     letter-spacing: 2px;
 }
 
+/* Settings Trigger */
+.settings-trigger {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-primary);
+    cursor: pointer;
+    z-index: 100;
+    transition: transform 0.3s ease, background 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.settings-trigger:hover {
+    transform: rotate(45deg);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Settings Panel */
+.settings-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.settings-panel.hidden {
+    display: none;
+    opacity: 0;
+}
+
+.settings-content {
+    width: 400px;
+    max-width: 90vw;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.settings-content h2 {
+    margin-bottom: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.setting-item.hidden {
+    display: none;
+}
+
+.setting-item label {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Form Elements */
+select, input[type="color"] {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 8px 12px;
+    color: white;
+    font-family: inherit;
+    cursor: pointer;
+    outline: none;
+}
+
+select option {
+    background: #1a1a1a;
+    color: white;
+}
+
+input[type="color"] {
+    width: 50px;
+    height: 40px;
+    padding: 2px;
+}
+
+/* Close Button */
+.close-btn {
+    background: white;
+    color: black;
+    border: none;
+    padding: 12px;
+    border-radius: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: opacity 0.3s ease;
+}
+
+.close-btn:hover {
+    opacity: 0.9;
+}
+
 @media (max-width: 768px) {
     .glass-card {
         padding: 30px 40px;
@@ -91,6 +211,12 @@ body {
     }
     .date-display {
         font-size: 1rem;
+    }
+    .settings-trigger {
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
     }
 }
 
